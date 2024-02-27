@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 @Service
-public class AuthorizationService {
+public class AuthTransactionService {
     @Autowired
     private RestTemplate restTemplate;
 

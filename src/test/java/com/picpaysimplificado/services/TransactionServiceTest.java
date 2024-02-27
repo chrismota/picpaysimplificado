@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class TransactionServiceTest {
@@ -28,7 +27,7 @@ class TransactionServiceTest {
     private TransactionRepository repository;
 
     @Mock
-    private AuthorizationService authService;
+    private AuthTransactionService authService;
 
     @Mock
     private NotificationService notificationService;
