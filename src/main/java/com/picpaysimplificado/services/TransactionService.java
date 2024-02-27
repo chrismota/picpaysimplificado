@@ -18,7 +18,7 @@ public class TransactionService {
     private TransactionRepository repository;
 
     @Autowired
-    private AuthorizationService authService;
+    private AuthTransactionService authService;
 
     @Autowired
     private NotificationService notificationService;
