@@ -6,7 +6,6 @@ import com.picpaysimplificado.dtos.LoginResponseDTO;
 import com.picpaysimplificado.dtos.RegisterDTO;
 import com.picpaysimplificado.infra.security.TokenService;
 import com.picpaysimplificado.repositories.AdminRepository;
-import com.picpaysimplificado.repositories.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

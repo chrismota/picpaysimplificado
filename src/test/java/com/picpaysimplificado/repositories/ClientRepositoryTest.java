@@ -1,8 +1,8 @@
 package com.picpaysimplificado.repositories;
 
-import com.picpaysimplificado.domain.user.User;
-import com.picpaysimplificado.domain.user.UserType;
-import com.picpaysimplificado.dtos.UserDTO;
+import com.picpaysimplificado.domain.user.Client;
+import com.picpaysimplificado.domain.user.ClientType;
+import com.picpaysimplificado.dtos.ClientDTO;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +16,10 @@ import java.util.Optional;
 
 @DataJpaTest
 @ActiveProfiles("test")
-class UserRepositoryTest {
+class ClientRepositoryTest {
 
     @Autowired
-    UserRepository userRepository;
+    ClientRepository clientRepository;
 
     @Autowired
     EntityManager entityManager;
@@ -28,10 +28,10 @@ class UserRepositoryTest {
     @DisplayName("Should get user successfully from database")
     void findUserByDocumentCase1() {
         String document = "999999999901";
-        UserDTO data = new UserDTO("Fernanda", "Teste", document, new BigDecimal(10), "test@gmail.com", "senha", UserType.COMMON);
-        this.createUser(data);
+        ClientDTO data = new ClientDTO("Fernanda", "Teste", document, new BigDecimal(10), "test@gmail.com", "senha", ClientType.COMMON);
+        this.createClient(data);
 
-        Optional<User> result = this.userRepository.findUserByDocument(document);
+        Optional<Client> result = this.clientRepository.findUserByDocument(document);
 
         assertThat(result.isPresent()).isTrue();
     }
@@ -41,14 +41,14 @@ class UserRepositoryTest {
     void findUserByDocumentCase2() {
         String document = "999999999901";
 
-        Optional<User> result = this.userRepository.findUserByDocument(document);
+        Optional<Client> result = this.clientRepository.findUserByDocument(document);
 
         assertThat(result.isEmpty()).isTrue();
     }
 
-    private User createUser(UserDTO data){
-        User newUser = new User(data);
-        this.entityManager.persist(newUser);
-        return newUser;
+    private Client createClient(ClientDTO data){
+        Client newClient = new Client(data);
+        this.entityManager.persist(newClient);
+        return newClient;
     }
 }

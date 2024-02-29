@@ -1,7 +1,6 @@
 package com.picpaysimplificado.domain.user;
 
-import com.picpaysimplificado.domain.user.UserType;
-import com.picpaysimplificado.dtos.UserDTO;
+import com.picpaysimplificado.dtos.ClientDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,13 +9,13 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name="TB_USERS")
+@Table(name="TB_CLIENTS")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class User implements Serializable {
+public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -31,14 +30,14 @@ public class User implements Serializable {
     private String password;
     private BigDecimal balance;
     @Enumerated(EnumType.STRING)
-    private UserType userType;
+    private ClientType clientType;
 
-    public User(UserDTO data){
+    public Client(ClientDTO data){
         this.firstName = data.firstName();
         this.lastName = data.lastName();
         this.document = data.document();
         this.balance = data.balance();
-        this.userType = data.userType();
+        this.clientType = data.clientType();
         this.password = data.password();
         this.email = data.email();
     }

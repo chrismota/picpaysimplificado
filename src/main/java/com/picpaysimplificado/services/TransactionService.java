@@ -1,7 +1,7 @@
 package com.picpaysimplificado.services;
 
 import com.picpaysimplificado.domain.transaction.Transaction;
-import com.picpaysimplificado.domain.user.User;
+import com.picpaysimplificado.domain.user.Client;
 import com.picpaysimplificado.dtos.TransactionDTO;
 import com.picpaysimplificado.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Service
 public class TransactionService {
     @Autowired
-    private UserService userService;
+    private ClientService clientService;
 
     @Autowired
     private TransactionRepository repository;
@@ -23,10 +23,10 @@ public class TransactionService {
     @Autowired
     private NotificationService notificationService;
     public Transaction createTransaction(TransactionDTO transactionDto) throws Exception {
-        User sender = this.userService.findUserById(transactionDto.senderId());
-        User receiver = this.userService.findUserById(transactionDto.receiverId());
+        Client sender = this.clientService.findClientById(transactionDto.senderId());
+        Client receiver = this.clientService.findClientById(transactionDto.receiverId());
 
-        userService.validateTransaction(sender, transactionDto.value());
+        clientService.validateTransaction(sender, transactionDto.value());
 
         boolean isAuthorized = this.authService.authorizeTransaction(sender, transactionDto.value());
 
@@ -44,8 +44,8 @@ public class TransactionService {
         receiver.setBalance(receiver.getBalance().add(transactionDto.value()));
 
         this.repository.save(newTransaction);
-        this.userService.saveUser(sender);
-        this.userService.saveUser(receiver);
+        this.clientService.saveClient(sender);
+        this.clientService.saveClient(receiver);
 
         this.notificationService.sendNotification(sender, "Transação realizada com sucesso.");
         this.notificationService.sendNotification(receiver, "Transação recebida com sucesso.");

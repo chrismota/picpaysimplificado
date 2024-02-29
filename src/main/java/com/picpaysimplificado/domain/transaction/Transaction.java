@@ -1,6 +1,6 @@
 package com.picpaysimplificado.domain.transaction;
 
-import com.picpaysimplificado.domain.user.User;
+import com.picpaysimplificado.domain.user.Client;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +25,9 @@ public class Transaction implements Serializable {
     private BigDecimal amount;
     @ManyToOne
     @JoinColumn(name = "sender_id")
-    private User sender;
+    private Client sender;
     @ManyToOne
     @JoinColumn(name = "receiver_id")
-    private User receiver;
+    private Client receiver;
     private LocalDateTime timestamp;
 }

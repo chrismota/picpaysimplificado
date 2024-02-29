@@ -1,6 +1,6 @@
 package com.picpaysimplificado.repositories;
 
-import com.picpaysimplificado.domain.user.User;
+import com.picpaysimplificado.domain.user.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
-   Optional<User> findUserByDocument(String document);
-   Optional<User> findUserById(UUID id);
+public interface ClientRepository extends JpaRepository<Client, UUID> {
+   Optional<Client> findUserByDocument(String document);
+   Optional<Client> findClientById(UUID id);
 }
