@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -44,11 +45,13 @@ class TransactionServiceTest {
     @Test
     @DisplayName("Should create transaction successfully when everything is OK")
     void createTransactionCase1() throws Exception {
-        User sender = new User(1L, "Maria", "Souza", "99999999991", "maria@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
-        User receiver = new User(2L, "Joao", "Souza", "99999999992", "joao@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
+        UUID senderId = UUID.randomUUID();
+        UUID receiverId = UUID.randomUUID();
+        User sender = new User(senderId, "Maria", "Souza", "99999999991", "maria@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
+        User receiver = new User(receiverId, "Joao", "Souza", "99999999992", "joao@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
 
-        when(userService.findUserById(1L)).thenReturn(sender);
-        when(userService.findUserById(2L)).thenReturn(receiver);
+        when(userService.findUserById(senderId)).thenReturn(sender);
+        when(userService.findUserById(receiverId)).thenReturn(receiver);
 
         when(authService.authorizeTransaction(any(), any())).thenReturn(true);
 
@@ -70,16 +73,18 @@ class TransactionServiceTest {
     @Test
     @DisplayName("Should throw Exception when transaction is not allowed")
     void createTransactionCase2() throws Exception {
-        User sender = new User(1L, "Maria", "Souza", "99999999991", "maria@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
-        User receiver = new User(2L, "Joao", "Souza", "99999999992", "joao@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
+        UUID senderId = UUID.randomUUID();
+        UUID receiverId = UUID.randomUUID();
+        User sender =  new User(senderId, "Maria", "Souza", "99999999991", "maria@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
+        User receiver = new User(receiverId, "Joao", "Souza", "99999999992", "joao@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
 
-        when(userService.findUserById(1L)).thenReturn(sender);
-        when(userService.findUserById(2L)).thenReturn(receiver);
+        when(userService.findUserById(senderId)).thenReturn(sender);
+        when(userService.findUserById(receiverId)).thenReturn(receiver);
 
         when(authService.authorizeTransaction(any(), any())).thenReturn(false);
 
         Exception thrown = Assertions.assertThrows(Exception.class, () -> {
-            TransactionDTO request = new TransactionDTO(new BigDecimal(10), 1L, 2L);
+            TransactionDTO request = new TransactionDTO(new BigDecimal(10), senderId, receiverId);
             transactionService.createTransaction(request);
         });
 

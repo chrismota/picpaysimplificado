@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - picpay:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=picpay
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - 5432:5432
+volumes:
+  picpay:
