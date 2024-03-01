@@ -1,7 +1,7 @@
 package com.picpaysimplificado.services;
 
-import com.picpaysimplificado.domain.user.Client;
-import com.picpaysimplificado.domain.user.ClientType;
+import com.picpaysimplificado.domain.user.User;
+import com.picpaysimplificado.domain.user.UserType;
 import com.picpaysimplificado.dtos.TransactionDTO;
 import com.picpaysimplificado.repositories.TransactionRepository;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class TransactionServiceTest {
 
     @Mock
-    private ClientService clientService;
+    private UserService userService;
 
     @Mock
     private TransactionRepository repository;
@@ -47,11 +47,11 @@ class TransactionServiceTest {
     void createTransactionCase1() throws Exception {
         UUID senderId = UUID.randomUUID();
         UUID receiverId = UUID.randomUUID();
-        Client sender = new Client(senderId, "Maria", "Souza", "99999999991", "maria@gmail.com", "12345", new BigDecimal(10), ClientType.COMMON);
-        Client receiver = new Client(receiverId, "Joao", "Souza", "99999999992", "joao@gmail.com", "12345", new BigDecimal(10), ClientType.COMMON);
+        User sender = new User(senderId, "Maria", "Souza", "99999999991", "maria@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
+        User receiver = new User(receiverId, "Joao", "Souza", "99999999992", "joao@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
 
-        when(clientService.findClientById(senderId)).thenReturn(sender);
-        when(clientService.findClientById(receiverId)).thenReturn(receiver);
+        when(userService.findUserById(senderId)).thenReturn(sender);
+        when(userService.findUserById(receiverId)).thenReturn(receiver);
 
         when(authService.authorizeTransaction(any(), any())).thenReturn(true);
 
@@ -61,10 +61,10 @@ class TransactionServiceTest {
         verify(repository, times(1)).save(any());
 
         sender.setBalance(new BigDecimal(0));
-        verify(clientService, times(1)).saveClient(sender);
+        verify(userService, times(1)).saveUser(sender);
 
         receiver.setBalance(new BigDecimal(20));
-        verify(clientService, times(1)).saveClient(receiver);
+        verify(userService, times(1)).saveUser(receiver);
 
         verify(notificationService, times(1)).sendNotification(sender, "Transação realizada com sucesso.");
         verify(notificationService, times(1)).sendNotification(receiver, "Transação recebida com sucesso.");
@@ -75,11 +75,11 @@ class TransactionServiceTest {
     void createTransactionCase2() throws Exception {
         UUID senderId = UUID.randomUUID();
         UUID receiverId = UUID.randomUUID();
-        Client sender =  new Client(senderId, "Maria", "Souza", "99999999991", "maria@gmail.com", "12345", new BigDecimal(10), ClientType.COMMON);
-        Client receiver = new Client(receiverId, "Joao", "Souza", "99999999992", "joao@gmail.com", "12345", new BigDecimal(10), ClientType.COMMON);
+        User sender =  new User(senderId, "Maria", "Souza", "99999999991", "maria@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
+        User receiver = new User(receiverId, "Joao", "Souza", "99999999992", "joao@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
 
-        when(clientService.findClientById(senderId)).thenReturn(sender);
-        when(clientService.findClientById(receiverId)).thenReturn(receiver);
+        when(userService.findUserById(senderId)).thenReturn(sender);
+        when(userService.findUserById(receiverId)).thenReturn(receiver);
 
         when(authService.authorizeTransaction(any(), any())).thenReturn(false);
 
