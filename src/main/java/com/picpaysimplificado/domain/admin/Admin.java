@@ -28,6 +28,7 @@ public class Admin implements UserDetails, Serializable{
     private UUID id;
     private String login;
     private String password;
+    @Enumerated(EnumType.STRING)
     private AdminRole role;
 
     public Admin(String login, String password, AdminRole role) {
