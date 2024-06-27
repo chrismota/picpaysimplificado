@@ -1,23 +1,6 @@
-package com.picpaysimplificado.domain.admin;
-
-//public enum RoleName {
-//    MASTER("master"),
-//    COMMON("common");
-//
-//    private String role;
-//
-//    RoleName(String role){
-//        this.role = role;
-//    }
-//
-//    public String getRole() {
-//        return role;
-//    }
-//}
+package com.picpaysimplificado.domain.role;
 
 public enum RoleName {
-
-    ROLE_CUSTOMER,
-    ROLE_ADMINISTRATOR
-
+    ROLE_COMMON,
+    ROLE_MASTER
 }

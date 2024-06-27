@@ -2,7 +2,7 @@ package com.picpaysimplificado.services;
 
 import com.picpaysimplificado.domain.user.User;
 import com.picpaysimplificado.domain.user.UserType;
-import com.picpaysimplificado.dtos.TransactionDTO;
+import com.picpaysimplificado.dtos.TransactionDto;
 import com.picpaysimplificado.repositories.TransactionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class TransactionServiceTest {
+class  TransactionServiceTest {
 
     @Mock
     private UserService userService;
@@ -55,7 +55,7 @@ class TransactionServiceTest {
 
         when(authService.authorizeTransaction(any(), any())).thenReturn(true);
 
-        TransactionDTO request = new TransactionDTO(new BigDecimal(10), senderId, receiverId);
+        TransactionDto request = new TransactionDto(new BigDecimal(10), senderId, receiverId);
         transactionService.createTransaction(request);
 
         verify(repository, times(1)).save(any());
@@ -84,7 +84,7 @@ class TransactionServiceTest {
         when(authService.authorizeTransaction(any(), any())).thenReturn(false);
 
         Exception thrown = Assertions.assertThrows(Exception.class, () -> {
-            TransactionDTO request = new TransactionDTO(new BigDecimal(10), senderId, receiverId);
+            TransactionDto request = new TransactionDto(new BigDecimal(10), senderId, receiverId);
             transactionService.createTransaction(request);
         });
 

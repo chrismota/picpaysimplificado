@@ -1,7 +1,7 @@
 package com.picpaysimplificado.controllers;
 
 import com.picpaysimplificado.domain.user.User;
-import com.picpaysimplificado.dtos.UserDTO;
+import com.picpaysimplificado.dtos.UserDto;
 import com.picpaysimplificado.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDto){
+    public ResponseEntity<User> createUser(@RequestBody UserDto userDto){
         User newUser = userService.createUser(userDto);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }

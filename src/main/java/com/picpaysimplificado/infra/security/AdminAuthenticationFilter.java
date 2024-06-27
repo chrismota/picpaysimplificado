@@ -8,38 +8,54 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.Arrays;
 
 @Component
-public class SecurityFilter extends OncePerRequestFilter {
+public class AdminAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     @Autowired
-    AdminRepository adminRepository;
+    private AdminRepository adminRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = this.recoverToken(request);
-        if(token != null){
-            var login = tokenService.getSubjectFromToken(token);
-            Optional<Admin> admin = adminRepository.findByLogin(login);
+        if (checkIfEndpointIsNotPublic(request)) {
+            String token = recoveryToken(request);
+            if (token != null) {
+                String subject = tokenService.getSubjectFromToken(token);
+                Admin admin = adminRepository.findByUsername(subject).get();
+                UserDetailsImpl userDetails = new UserDetailsImpl(admin);
 
-            var authentication = new UsernamePasswordAuthenticationToken(admin, null, admin.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                Authentication authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                throw new RuntimeException("O token está ausente.");
+            }
         }
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest request){
-        var authHeader = request.getHeader("Authorization");
-        if(authHeader == null) return null;
-        return authHeader.replace("Bearer ", "");
+    private String recoveryToken(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null) {
+            return authorizationHeader.replace("Bearer ", "");
+        }
+        return null;
     }
+
+    private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        return !Arrays.asList(SecurityConfiguration.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).contains(requestURI);
+    }
+
 }

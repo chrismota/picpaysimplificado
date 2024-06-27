@@ -1,6 +1,6 @@
 package com.picpaysimplificado.domain.user;
 
-import com.picpaysimplificado.dtos.UserDTO;
+import com.picpaysimplificado.dtos.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name="TB_CLIENTS")
+@Table(name="clients")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,7 +32,7 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    public User(UserDTO data){
+    public User(UserDto data){
         this.firstName = data.firstName();
         this.lastName = data.lastName();
         this.document = data.document();

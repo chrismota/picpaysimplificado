@@ -1,4 +1,4 @@
 package com.picpaysimplificado.dtos;
 
-public record LoginUserDto(String email, String password) {
+public record LoginAdminDto(String username, String password) {
 }

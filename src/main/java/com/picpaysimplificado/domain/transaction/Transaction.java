@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity(name = "TB_TRANSACTIONS")
-@Table(name = "TB_TRANSACTIONS")
+@Entity
+@Table(name = "transactions")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -2,7 +2,7 @@ package com.picpaysimplificado.services;
 
 import com.picpaysimplificado.domain.user.User;
 import com.picpaysimplificado.domain.user.UserType;
-import com.picpaysimplificado.dtos.UserDTO;
+import com.picpaysimplificado.dtos.UserDto;
 import com.picpaysimplificado.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,27 +16,27 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public void validateTransaction(User sender, BigDecimal amount) throws Exception {
-        if(sender.getUserType() == UserType.MERCHANT) {
-            throw new Exception("Usuário do tipo lojista não está autorizado a realizar transações");
+    public void validateTransaction(User sender, BigDecimal amount) {
+        if (sender.getUserType() == UserType.MERCHANT) {
+            throw new RuntimeException("Usuário do tipo lojista não está autorizado a realizar transações");
         }
 
-        if(sender.getBalance().compareTo(amount) < 0){
-            throw new Exception("Saldo insuficiente");
+        if (sender.getBalance().compareTo(amount) < 0) {
+            throw new RuntimeException("Saldo insuficiente");
         }
     }
 
-    public User findUserById(UUID id) throws Exception {
-        return this.repository.findUserById(id).orElseThrow(() -> new Exception("Usuário não encontrado"));
+    public User findUserById(UUID id) {
+        return this.repository.findUserById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
-    public User createUser(UserDTO data){
+    public User createUser(UserDto data) {
         User newUser = new User(data);
         this.saveUser(newUser);
         return newUser;
     }
 
-    public void saveUser(User user){
+    public void saveUser(User user) {
         this.repository.save(user);
     }
 

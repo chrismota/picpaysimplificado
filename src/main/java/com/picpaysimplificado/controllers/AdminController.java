@@ -1,52 +1,32 @@
 package com.picpaysimplificado.controllers;
 
 import com.picpaysimplificado.dtos.*;
-import com.picpaysimplificado.services.AuthAdminService;
+import com.picpaysimplificado.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-//@RestController
-//@RequestMapping("auth")
-//@RequiredArgsConstructor
-//public class AuthAdminController {
-//    private final AuthAdminService authAdminService;
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthAdminDTO authAdminDTO) {
-//        LoginResponseDTO token = authAdminService.authenticateUser(authAdminDTO);
-//        return ResponseEntity.ok(token);
-//    }
-//
-//    @PostMapping("/register")
-//    public ResponseEntity register(@RequestBody @Valid RegisterDTO data) throws Exception {
-//        authAdminService.createUser(data);
-//        return ResponseEntity.ok(HttpStatus.CREATED);
-//    }
-//}
-
-
 @RestController
-@RequestMapping("/users")
-public class AuthAdminController {
+@RequestMapping
+public class AdminController {
 
     @Autowired
-    private AuthAdminService adminService;
+    private AdminService adminService;
 
-    @PostMapping("/login")
-    public ResponseEntity<RecoveryJwtTokenDto> authenticateUser(@RequestBody LoginUserDto loginUserDto) {
-        RecoveryJwtTokenDto token = adminService.authenticateUser(loginUserDto);
+    @PostMapping("/auth/login")
+    public ResponseEntity<RecoveryJwtTokenDto> authenticateAdmin(@RequestBody LoginAdminDto loginAdminDto) {
+        RecoveryJwtTokenDto token = adminService.authenticateAdmin(loginAdminDto);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody CreateAdminDto createAdminDto) {
-        adminService.createUser(createAdminDto);
+    @PostMapping("/auth/register")
+    public ResponseEntity<Void> createAdmin(@RequestBody CreateAdminDto createAdminDto) throws Exception {
+        adminService.createAdmin(createAdminDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test/logged")
     public ResponseEntity<String> getAuthenticationTest() {
         return new ResponseEntity<>("Autenticado com sucesso", HttpStatus.OK);
     }
@@ -54,11 +34,6 @@ public class AuthAdminController {
     @GetMapping("/test/customer")
     public ResponseEntity<String> getCustomerAuthenticationTest() {
         return new ResponseEntity<>("Cliente autenticado com sucesso", HttpStatus.OK);
-    }
-
-    @GetMapping("/test/administrator")
-    public ResponseEntity<String> getAdminAuthenticationTest() {
-        return new ResponseEntity<>("Administrador autenticado com sucesso", HttpStatus.OK);
     }
 
 }

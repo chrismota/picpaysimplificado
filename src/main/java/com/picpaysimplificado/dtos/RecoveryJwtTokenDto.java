@@ -1,2 +1,4 @@
-package com.picpaysimplificado.dtos;public record RecoveryJwtTokenDto() {
+package com.picpaysimplificado.dtos;
+
+public record RecoveryJwtTokenDto(String token) {
 }

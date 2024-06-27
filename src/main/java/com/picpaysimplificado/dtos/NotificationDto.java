@@ -1,4 +1,4 @@
 package com.picpaysimplificado.dtos;
 
-public record NotificationDTO (String email, String message){
+public record NotificationDto(String email, String message){
 }

@@ -2,7 +2,7 @@ package com.picpaysimplificado.repositories;
 
 import com.picpaysimplificado.domain.user.User;
 import com.picpaysimplificado.domain.user.UserType;
-import com.picpaysimplificado.dtos.UserDTO;
+import com.picpaysimplificado.dtos.UserDto;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class UserRepositoryTest {
     @DisplayName("Should get user successfully from database")
     void findUserByDocumentCase1() {
         String document = "999999999901";
-        UserDTO data = new UserDTO("Fernanda", "Teste", document, new BigDecimal(10), "test@gmail.com", "senha", UserType.COMMON);
+        UserDto data = new UserDto("Fernanda", "Teste", document, new BigDecimal(10), "test@gmail.com", "senha", UserType.COMMON);
         this.createClient(data);
 
         Optional<User> result = this.userRepository.findUserByDocument(document);
@@ -46,7 +46,7 @@ class UserRepositoryTest {
         assertThat(result.isEmpty()).isTrue();
     }
 
-    private User createClient(UserDTO data){
+    private User createClient(UserDto data){
         User newUser = new User(data);
         this.entityManager.persist(newUser);
         return newUser;

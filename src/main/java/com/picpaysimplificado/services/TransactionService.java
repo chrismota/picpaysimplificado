@@ -2,7 +2,7 @@ package com.picpaysimplificado.services;
 
 import com.picpaysimplificado.domain.transaction.Transaction;
 import com.picpaysimplificado.domain.user.User;
-import com.picpaysimplificado.dtos.TransactionDTO;
+import com.picpaysimplificado.dtos.TransactionDto;
 import com.picpaysimplificado.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,8 @@ public class TransactionService {
 
     @Autowired
     private NotificationService notificationService;
-    public Transaction createTransaction(TransactionDTO transactionDto) throws Exception {
+
+    public Transaction createTransaction(TransactionDto transactionDto) {
         User sender = this.userService.findUserById(transactionDto.senderId());
         User receiver = this.userService.findUserById(transactionDto.receiverId());
 
@@ -31,7 +32,7 @@ public class TransactionService {
         boolean isAuthorized = this.authService.authorizeTransaction(sender, transactionDto.value());
 
         if (!isAuthorized) {
-            throw new Exception("Transação não autorizada");
+            throw new RuntimeException("Transação não autorizada");
         }
 
         Transaction newTransaction = new Transaction();
