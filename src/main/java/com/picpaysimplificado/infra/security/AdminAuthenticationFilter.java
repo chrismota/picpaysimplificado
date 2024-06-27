@@ -1,5 +1,6 @@
 package com.picpaysimplificado.infra.security;
 
+import com.picpaysimplificado.domain.admin.Admin;
 import com.picpaysimplificado.repositories.AdminRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,11 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -27,8 +28,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         if(token != null){
-            var login = tokenService.validateToken(token);
-            UserDetails admin = adminRepository.findByLogin(login);
+            var login = tokenService.getSubjectFromToken(token);
+            Optional<Admin> admin = adminRepository.findByLogin(login);
 
             var authentication = new UsernamePasswordAuthenticationToken(admin, null, admin.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
